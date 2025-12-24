@@ -2,27 +2,28 @@ songs = [] # 2d list that stores song data in the format of [name, artist, total
 def main(filename):
     file = open(filename, "r")
     # store:
-        time = # ms_played
-        name = # master_metadata_track_name
-        artist = # master_metadata_album_artist_name
-        skipped = # skipped (for number of plays)
-        i = 1
+        time = 0 # ms_played
+        name = "" # master_metadata_track_name
+        artist = "" # master_metadata_album_artist_name
+        skipped = False # skipped (for number of plays)
+        line_num = 1
     for line in file:
         # update song name
-        if(((i - 6) % 23) == 0): # first time on 6th line, next 23 lines after
+        if(((line_num - 6) % 23) == 0): # first time on 6th line, next 23 lines after
             time = int(line[17:].strip(,))
-        elif(((i - 10) % 23) == 0): # first name on 10th line, next 23 lines after
+        elif(((line_num - 10) % 23) == 0): # first name on 10th line, next 23 lines after
             name = line[34:].strip(,)
-        elif(((i - 11) % 23) == 0): # first artist on 11th line, next 23 lines after
+        elif(((line_num - 11) % 23) == 0): # first artist on 11th line, next 23 lines after
             artist = line[37:].strip(,)
-        elif(((i - 20) % 23) == 0): # first skipped on 20th line, next 23 lines after
+        elif(((line_num - 20) % 23) == 0): # first skipped on 20th line, next 23 lines after
             skipped = line[15:].strip(,)
             if(skipped == "true"):
                 skipped = True
             else:
                 skipped = False
             manage_song(time, name, artist, skipped)
-        i += 1
+        line_num += 1
+    print(print_songs())
         
 
 def check_song(index, time, skipped):
@@ -45,28 +46,9 @@ def manage_song(time, name, artist, skipped):
         songs.append([name, artist, 0, 0])
         check_song(len(songs - 1), time, skipped)
 
-""" Data template
-{
-"ts": "YYY-MM-DD 13:30:30",
-"username": "_________",
-"platform": "_________",
-"ms_played": _________,
-"conn_country": "_________",
-"ip_addr_decrypted": "___.___.___.___",
-"user_agent_decrypted": "_________",
-"master_metadata_track_name": "_________,
-“master_metadata_album_artist_name:_________”,
-“master_metadata_album_album_name:_________",
-“spotify_track_uri:_________”,
-"episode_name": _________,
-"episode_show_name": _________,
-“spotify_episode_uri:_________”,
-"reason_start": "_________",
-"reason_end": "_________",
-"shuffle": null/true/false,
-"skipped": null/true/false,
-"offline": null/true/false,
-"offline_timestamp": _________,
-"incognito_mode": null/true/false,
-}
-"""
+def print_songs():
+    output = ""
+    for i in range(0, len(songs)):
+        for j in range(0, len(songs[i])):
+            output += f"Name: {songs[i][0]}\nArtist: {songs[i][1]}\nTime Played: {(songs[i][2] / 3600000):.1f} seconds\nTotal Plays: {songs[i][3]}\n\n"
+    return output
