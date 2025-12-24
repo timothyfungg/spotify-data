@@ -24,7 +24,6 @@ def main(filename):
             manage_song(time, name, artist, track_done)
         line_num += 1
     print(print_songs())
-    print(songs)
     file.close()
         
 
