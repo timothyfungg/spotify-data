@@ -53,3 +53,5 @@ def print_songs():
     for i in range(0, len(songs)):
         output += f"Name: {songs[i][0]}\nArtist: {songs[i][1]}\nTime Played: {(songs[i][2] / 1000):.1f} seconds\nTotal Plays: {songs[i][3]}\n\n"
     return output
+
+main(input("Enter filename: ").strip('"'))
